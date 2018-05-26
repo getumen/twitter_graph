@@ -18,7 +18,7 @@ class Crawler:
         auth = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
         auth.set_access_token(settings.ACCESS_TOKEN, settings.ACCESS_TOKEN_SECRET)
         self.api = tweepy.API(auth)
-        self.sleep_time = 10.0
+        self.sleep_time = 60.0
 
     def save_user(self, user: tweepy.User) -> schema.User:
         user_node = schema.User.nodes.get_or_none(screen_name=user.screen_name)
@@ -73,8 +73,9 @@ class Crawler:
 
         install_labels(schema.User)
 
-        screen_name = self.q.get()
-        if screen_name is None:
+        if self.q.size > 0:
+            screen_name = self.q.get()
+        else:
             screen_name = default_screen_name
 
         while True:
@@ -90,12 +91,12 @@ class Crawler:
                         friend_node.is_followed_from.connect(user_node)
                     time.sleep(self.sleep_time)
 
-                for page in tweepy.Cursor(self.api.followers, id=user.id).pages():
-                    for follower in page:
-                        self.q.put(follower.screen_name)
-                        follower_node = self.save_user(follower)
-                        user_node.is_followed_from.connect(follower_node)
-                    time.sleep(self.sleep_time)
+                # for page in tweepy.Cursor(self.api.followers, id=user.id).pages():
+                #     for follower in page:
+                #         self.q.put(follower.screen_name)
+                #         follower_node = self.save_user(follower)
+                #         user_node.is_followed_from.connect(follower_node)
+                #     time.sleep(self.sleep_time)
 
                 screen_name = self.q.get()
 
