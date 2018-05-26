@@ -1,0 +1,11 @@
+import os
+
+CONSUMER_KEY = os.environ["TWITTER_CONSUMER_KEY"]
+CONSUMER_SECRET = os.environ["TWITTER_CONSUMER_KEY"]
+
+ACCESS_TOKEN = os.environ["TWITTER_ACCESS_TOKEN"]
+ACCESS_TOKEN_SECRET = os.environ["TWITTER_ACCESS_TOKEN_SECRET"]
+
+NEO4J_PASSWORD = 'twitter'
+
+NEO4J_URL = 'bolt://neo4j:{}@localhost:7687'.format(NEO4J_PASSWORD)
