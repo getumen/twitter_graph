@@ -64,7 +64,7 @@ class Crawler:
 
         return user_node
 
-    def traverse(self, init_screen_name='letitbe_or_not', from_queue=True):
+    def traverse(self, init_screen_name='letitbe_or_not', from_queue=False):
 
         install_labels(schema.User)
 
