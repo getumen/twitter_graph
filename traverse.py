@@ -62,6 +62,8 @@ class Crawler:
 
         user_node.save()
 
+        logging.info('save {}'.format(user_node.screen_name))
+
         return user_node
 
     def traverse(self, init_screen_name='letitbe_or_not', from_queue=False):
@@ -99,6 +101,6 @@ class Crawler:
                 logging.warning(e)
                 time.sleep(15 * 60)
             except tweepy.error.TweepError as e:
-                if e.message[0]['code'] >= 400:
+                if e.api_code >= 400:
                     logging.error(e)
                     self.sleep_time *= 2

@@ -2,6 +2,7 @@ import traverse
 
 
 def main():
+
     crawler = traverse.Crawler()
     crawler.traverse(True)
 
