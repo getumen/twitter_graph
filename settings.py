@@ -1,4 +1,5 @@
 import os
+import logging
 
 CONSUMER_KEY = os.environ["TWITTER_CONSUMER_KEY"]
 CONSUMER_SECRET = os.environ["TWITTER_CONSUMER_SECRET"]
@@ -9,3 +10,4 @@ NEO4J_PASSWORD = 'twitter'
 
 NEO4J_URL = 'bolt://neo4j:{}@localhost:7687'.format(NEO4J_PASSWORD)
 
+LOG_LEVEL = logging.DEBUG

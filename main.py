@@ -1,10 +1,9 @@
 import traverse
 
-
 def main():
 
     crawler = traverse.Crawler()
-    crawler.traverse(True)
+    crawler.traverse()
 
 
 if __name__ == '__main__':

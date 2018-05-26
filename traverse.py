@@ -3,8 +3,11 @@ import schema
 import settings
 import tweepy
 import time
-import logging
 from neomodel import install_labels
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(settings.LOG_LEVEL)
 
 
 class Crawler:
@@ -62,18 +65,17 @@ class Crawler:
 
         user_node.save()
 
-        logging.info('save {}'.format(user_node.screen_name))
+        print('save {}'.format(user_node.screen_name))
 
         return user_node
 
-    def traverse(self, init_screen_name='letitbe_or_not', from_queue=False):
+    def traverse(self, default_screen_name='letitbe_or_not'):
 
         install_labels(schema.User)
 
-        if from_queue:
-            screen_name = self.q.get()
-        else:
-            screen_name = init_screen_name
+        screen_name = self.q.get()
+        if screen_name is None:
+            screen_name = default_screen_name
 
         while True:
 
@@ -98,9 +100,10 @@ class Crawler:
                 screen_name = self.q.get()
 
             except tweepy.error.RateLimitError as e:
-                logging.warning(e)
+                logger.warning(e)
+                self.sleep_time *= 2
                 time.sleep(15 * 60)
             except tweepy.error.TweepError as e:
                 if e.api_code >= 400:
-                    logging.error(e)
+                    logger.error(e)
                     self.sleep_time *= 2
